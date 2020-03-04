@@ -8,10 +8,6 @@
 
 import SwiftUI
  
-struct Response: Codable {
-    var respose: [User]
-}
-
 // MARK: - User
 struct User: Codable {
     var id: String
@@ -19,7 +15,6 @@ struct User: Codable {
     var name: String
     var age: Int
     var company, email, address, about: String
-    var registered: Date
     var tags: [String]
     var friends: [Friend]
 }
@@ -52,9 +47,9 @@ struct ContentView: View {
         
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let data = data {
-                 if let decodedResponse = try? JSONDecoder().decode(Response.self, from: data) {
+                 if let decodedResponse = try? JSONDecoder().decode([User].self, from: data) {
                     DispatchQueue.main.async {
-                        self.results = decodedResponse.respose
+                        self.results = decodedResponse
                     }
                     return
                 }
